@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <title>Title</title>
+</head>
+<link href="/css/searcher.css" rel="stylesheet"/>
+<link rel="stylesheet" type="text/css" href="/datatables/datatables.min.css" />
+<script type="text/javascript" charset="utf8" src="/datatables/datatables.min.js"></script>
+
+<script th:inline="javascript">
+    $(document).ready(function() {
+        $('#products').DataTable({
+            "language": {
+                "search": "Filter:"
+                }
+        });
+    });
+</script>
+<body>
+<div>
+    <div class="form">
+        <form th:action="@{/do-search}" method="post">
+            <span>Please enter your keywords to search : </span>
+            <input th:value="${keyword}" name="keyword" />
+            <input type="submit" value="Search" />
+            <br/>
+        </form>
+
+        <div th:if="${results != null}" style="margin-top:50px;">
+            <table id="products" class="display compact" cellspacing="0" width="100%">
+                <thead>
+                <tr>
+                    <th>Product title</th>
+                    <th>Original price</th>
+                    <th>Sale price</th>
+                    <th>Product ID</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="product:${results}">
+                    <td th:utext="${product.productTitle}"></td>
+                    <td th:utext="${product.originalPrice}"></td>
+                    <td th:utext="${product.salePrice}"></td>
+                    <td th:utext="${product.productId}"></td>
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+        <div th:if="${error != null}" style="margin-top:50px;">
+            <span th:text="${error}"></span>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
